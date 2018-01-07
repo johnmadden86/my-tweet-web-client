@@ -452,7 +452,6 @@ define('services/tweet-service',['exports', 'aurelia-framework', './fixtures', '
       console.log('attempting to post new tweet');
       this.ac.post('/api/tweets', tweet).then(function (res) {
         _this11.profileTweets.unshift(res.content);
-        console.log(_this11.currentUser._id);
         _this11.getAllTweetsForUser(_this11.currentUser._id);
       });
     };
