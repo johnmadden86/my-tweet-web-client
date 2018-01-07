@@ -256,7 +256,7 @@ define('services/fixtures',['exports'], function (exports) {
   var Fixtures = function Fixtures() {
     _classCallCheck(this, Fixtures);
 
-    this.baseUrl = 'http://localhost:4000';
+    this.baseUrl = 'https://lit-plains-67430.herokuapp.com';
   };
 
   exports.default = Fixtures;
