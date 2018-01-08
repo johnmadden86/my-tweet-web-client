@@ -172,11 +172,14 @@ define('services/async-http-client',['exports', 'aurelia-framework', 'aurelia-ht
 
   var AsyncHttpClient = (_dec = (0, _aureliaFramework.inject)(_aureliaHttpClient.HttpClient, _fixtures2.default, _aureliaEventAggregator.EventAggregator), _dec(_class = function () {
     function AsyncHttpClient(httpClient, fixtures, ea) {
+      var _this = this;
+
       _classCallCheck(this, AsyncHttpClient);
 
       this.http = httpClient;
       this.http.configure(function (http) {
         http.withBaseUrl(fixtures.baseUrl);
+        console.log(_this.http);
       });
       this.ea = ea;
     }
@@ -194,26 +197,26 @@ define('services/async-http-client',['exports', 'aurelia-framework', 'aurelia-ht
     };
 
     AsyncHttpClient.prototype.authenticate = function authenticate(url, user) {
-      var _this = this;
+      var _this2 = this;
 
       this.http.post(url, user).then(function (response) {
         var status = response.content;
         localStorage.tweet = JSON.stringify(status);
         if (status.success) {
           console.log('authentication successful');
-          _this.http.configure(function (configuration) {
+          _this2.http.configure(function (configuration) {
             configuration.withHeader('Authorization', status.token);
           });
         }
-        _this.ea.publish(new _messages.LoginStatus(status));
-        _this.ea.publish(new _messages.LoggedInUser(status.user));
+        _this2.ea.publish(new _messages.LoginStatus(status));
+        _this2.ea.publish(new _messages.LoggedInUser(status.user));
       }).catch(function (error) {
         var status = {
           success: false,
           message: 'service not available'
         };
         console.log('authentication unsuccessful');
-        _this.ea.publish(new _messages.LoginStatus(status));
+        _this2.ea.publish(new _messages.LoginStatus(status));
       });
     };
 
@@ -256,7 +259,7 @@ define('services/fixtures',['exports'], function (exports) {
   var Fixtures = function Fixtures() {
     _classCallCheck(this, Fixtures);
 
-    this.baseUrl = 'http://localhost:4000';
+    this.baseUrl = 'https://lit-plains-67430.herokuapp.com';
   };
 
   exports.default = Fixtures;
@@ -452,7 +455,6 @@ define('services/tweet-service',['exports', 'aurelia-framework', './fixtures', '
       console.log('attempting to post new tweet');
       this.ac.post('/api/tweets', tweet).then(function (res) {
         _this11.profileTweets.unshift(res.content);
-        console.log(_this11.currentUser._id);
         _this11.getAllTweetsForUser(_this11.currentUser._id);
       });
     };
@@ -625,8 +627,8 @@ define('view-models/login/login',['exports', 'aurelia-framework', '../../service
     function Login(ts) {
       _classCallCheck(this, Login);
 
-      this.email = 'homer@simpson.com';
-      this.password = 'secret';
+      this.email = '';
+      this.password = '';
 
       this.tweetService = ts;
     }
